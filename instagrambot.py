@@ -385,6 +385,7 @@ if __name__ == '__main__':
     bot.like_latest_post('martialfc', 10, like=True)
     bot.comment_post('awesome')
     bot.stories_all()
+    bot.Likes_photoTags("soccer", 100)
 
  
 
