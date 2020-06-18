@@ -181,7 +181,33 @@ class InstagramBot:
                 self.driver.find_element_by_class_name("Ypffh").send_keys(Keys.ENTER)
                 time.sleep(5)
 
+    # Like  Photos in a tag by specifying  their amount
+    def Likes_photoTags(self, tag, posts, like=True):
+        action = 'Like' if like else 'Unlike'
 
+        self.driver.get("https://www.instagram.com/explore/tags/" + tag + "/")
+        time.sleep(2)       
+        pic_hrefs = []
+        for i in range(1, 5):
+            self.driver.execute_script("window.scrollTo(0,document.scrollHeight);")
+            time.sleep(2)
+        #searching for pictures link
+        hrefs_in_view = self.driver.find_elements_by_tag_name('a')
+        # finding relevant hrefs
+        hrefs_in_view = [elem.get_attribute('href') for elem in hrefs_in_view
+                         if '.com/p/' in elem.get_attribute('href')]
+        # building list of unique photos
+        [pic_hrefs.append(href) for href in hrefs_in_view if href not in pic_hrefs]
+        print("Check: pic href length " + str(len(pic_hrefs)))
+
+        for pics in pic_hrefs[:posts]:
+            self.driver.get(pics)
+            time.sleep(10)
+            try:
+                self.driver.find_element_by_xpath("//*[@aria-label='{}']".format(action)).click()    
+            except NoSuchElementException:
+                print('no such element has been found')
+                time.sleep(5)
 
 # ======================================Comment Section=================================================================
     
